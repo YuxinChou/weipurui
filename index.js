@@ -7,11 +7,14 @@ const fs = require("fs");
 const path = require("path");
 const { init: initDB, Counter } = require("./db");
 const config = require("./config");
+const axios = require('axios')
 
 const router = new Router();
 
 const homePage = fs.readFileSync(path.join(__dirname, "index.html"), "utf-8");
 const testPage = fs.readFileSync(path.join(__dirname, "test.html"), "utf-8");
+
+const client = axios.default
 
 // 首页
 router.get("/", async (ctx) => {
@@ -48,6 +51,27 @@ router.post("/", async (ctx) => {
 });
 
 router.post("/message", async (ctx) => {
+  console.log('################');
+  console.log('request');
+  console.log(request);
+  console.log('body');
+  console.log(request.body);
+
+  const { request } = ctx;
+  const { headers, body } = request;
+  const token = headers['x-wx-cloudbase-access-token']
+  const weixinAPI = `https://api.weixin.qq.com/cgi-bin/message/custom/send?cloudbase_access_token=${token}`
+  const payload = {
+      touser: headers['x-wx-openid'],
+      msgtype: 'text',
+      text: {
+          content: `云托管接收消息推送成功，内容如下：\n${JSON.stringify(body, null, 2)}`
+      }
+  }
+  // dispatch to wx server
+  const result = await client.post(weixinAPI, payload)
+  console.log('received request', body, result.data)
+
   ctx.body = 'success';
 });
 
@@ -103,7 +127,7 @@ const handleMsg = async () => {
 
 const app = new Koa();
 app
-  .use(WeChat(config, handleMsg))
+  // .use(WeChat(config, handleMsg))
   .use(logger())
   .use(bodyParser())
   .use(router.routes())
