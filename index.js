@@ -12,8 +12,12 @@ const homePage = fs.readFileSync(path.join(__dirname, "index.html"), "utf-8");
 
 // 首页
 router.get("/", async (ctx) => {
+  const { request } = ctx;
+  console.log('request');
+  console.log(request);
   ctx.body = homePage;
 });
+
 
 // 更新计数
 router.post("/api/count", async (ctx) => {
