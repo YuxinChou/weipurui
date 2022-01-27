@@ -1,10 +1,12 @@
 const Koa = require("koa");
+const WeChat = require("koa-easywechat");
 const Router = require("koa-router");
 const logger = require("koa-logger");
 const bodyParser = require("koa-bodyparser");
 const fs = require("fs");
 const path = require("path");
 const { init: initDB, Counter } = require("./db");
+const config = require("./config");
 
 const router = new Router();
 
@@ -19,26 +21,30 @@ router.get("/", async (ctx) => {
 });
 
 router.post("/", async (ctx) => {
-  const { request } = ctx;
-  console.log('################');
-  console.log('request');
-  console.log(request);
-  console.log('query');
-  console.log(request.query);
-  console.log('body');
-  console.log(request.body);
-  try {
-    ctx.body = {
-      ToUserName: request.body.FromUserName,
-      FromUserName: request.body.ToUserName,
-      CreateTime: Date.parse(new Date())/1000,
-      MsgType: 'text',
-      Content: 'Hello!'
-    }
-  } catch(err) {
-    console.log('====== err =========')
-    console.log(err)
-  }
+  // const { request } = ctx;
+  // console.log('################');
+  // console.log('request');
+  // console.log(request);
+  // console.log('query');
+  // console.log(request.query);
+  // console.log('body');
+  // console.log(request.body);
+  // const { signature, timestamp, nonce, openid } = request.query;
+  // const arr = [token, timestamp, nonce];
+
+
+  // try {
+  //   ctx.body = {
+  //     ToUserName: request.body.FromUserName,
+  //     FromUserName: request.body.ToUserName,
+  //     CreateTime: Date.parse(new Date())/1000,
+  //     MsgType: 'text',
+  //     Content: 'Hello!'
+  //   }
+  // } catch(err) {
+  //   console.log('====== err =========')
+  //   console.log(err)
+  // }
 });
 
 router.get("/home", async (ctx) => {
@@ -84,8 +90,16 @@ router.get("/api/wx_openid", async (ctx) => {
   }
 });
 
+const handleMsg = async () => {
+  this.reply = {
+    type:"text",
+    content:"回复一段文字吧"
+  }
+}
+
 const app = new Koa();
 app
+  .use(WeChat(config, handleMsg))
   .use(logger())
   .use(bodyParser())
   .use(router.routes())
