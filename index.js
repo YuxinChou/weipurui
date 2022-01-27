@@ -15,7 +15,10 @@ router.get("/", async (ctx) => {
   const { request } = ctx;
   console.log('request');
   console.log(request);
-  ctx.body = homePage;
+  console.log('query');
+  console.log(request.query);
+  ctx.body = '4152867566189207519×';
+  // signature=865208735b9434d548ebab107a6d055afceefe3e&echostr=4152867566189207519×tamp=1643251675&nonce=588243721
 });
 
 
