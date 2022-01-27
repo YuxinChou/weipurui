@@ -13,15 +13,24 @@ const homePage = fs.readFileSync(path.join(__dirname, "index.html"), "utf-8");
 // 首页
 router.get("/", async (ctx) => {
   const { request } = ctx;
+  const { echostr } = request.query;
+  ctx.body = echostr;
+});
+
+router.post("/", async (ctx) => {
+  const { request } = ctx;
   console.log('request');
   console.log(request);
   console.log('query');
   console.log(request.query);
-  const { query } = request;
-  ctx.body = query.echostr;
-  // signature=865208735b9434d548ebab107a6d055afceefe3e&echostr=4152867566189207519×tamp=1643251675&nonce=588243721
+  console.log('body');
+  console.log(request.body);
+  ctx.body = '哈咯';
 });
 
+router.get("/home", async (ctx) => {
+  ctx.body = homePage;
+});
 
 // 更新计数
 router.post("/api/count", async (ctx) => {
