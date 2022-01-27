@@ -9,6 +9,7 @@ const { init: initDB, Counter } = require("./db");
 const router = new Router();
 
 const homePage = fs.readFileSync(path.join(__dirname, "index.html"), "utf-8");
+const testPage = fs.readFileSync(path.join(__dirname, "test.html"), "utf-8");
 
 // 首页
 router.get("/", async (ctx) => {
@@ -42,6 +43,10 @@ router.post("/", async (ctx) => {
 
 router.get("/home", async (ctx) => {
   ctx.body = homePage;
+});
+
+router.get("/test", async (ctx) => {
+  ctx.body = testPage;
 });
 
 // 更新计数
