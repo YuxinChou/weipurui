@@ -51,14 +51,8 @@ router.post("/", async (ctx) => {
 });
 
 router.post("/message", async (ctx) => {
-  const { request } = ctx;
-  
   console.log('################');
-  console.log('request');
-  console.log(request);
-  console.log('body');
-  console.log(request.body);
-
+  const { request } = ctx;
   const { headers, body } = request;
   const token = headers['x-wx-cloudbase-access-token']
   const weixinAPI = `https://api.weixin.qq.com/cgi-bin/message/custom/send?cloudbase_access_token=${token}`
