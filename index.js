@@ -25,7 +25,13 @@ router.post("/", async (ctx) => {
   console.log(request.query);
   console.log('body');
   console.log(request.body);
-  ctx.body = '哈咯';
+  ctx.body = {
+    ToUserName: request.body.FromUserName,
+    FromUserName: request.body.ToUserName,
+    CreateTime: Date.parse(new Date())/1000,
+    MsgType: 'text',
+    Content: 'Hello!'
+  }
 });
 
 router.get("/home", async (ctx) => {
