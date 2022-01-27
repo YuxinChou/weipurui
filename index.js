@@ -19,18 +19,24 @@ router.get("/", async (ctx) => {
 
 router.post("/", async (ctx) => {
   const { request } = ctx;
+  console.log('################');
   console.log('request');
   console.log(request);
   console.log('query');
   console.log(request.query);
   console.log('body');
   console.log(request.body);
-  ctx.body = {
-    ToUserName: request.body.FromUserName,
-    FromUserName: request.body.ToUserName,
-    CreateTime: Date.parse(new Date())/1000,
-    MsgType: 'text',
-    Content: 'Hello!'
+  try {
+    ctx.body = {
+      ToUserName: request.body.FromUserName,
+      FromUserName: request.body.ToUserName,
+      CreateTime: Date.parse(new Date())/1000,
+      MsgType: 'text',
+      Content: 'Hello!'
+    }
+  } catch(err) {
+    console.log('====== err =========')
+    console.log(err)
   }
 });
 
