@@ -47,6 +47,10 @@ router.post("/", async (ctx) => {
   // }
 });
 
+router.post("/message", async (ctx) => {
+  ctx.body = 'success';
+});
+
 router.get("/home", async (ctx) => {
   ctx.body = homePage;
 });
